@@ -3,6 +3,7 @@ using System;
 using ShapeUtils;
 
 // маленький пример тестов
+// Сразу передупреждаю тэсты писал редко и могу что-то не знать
 namespace Tests
 {
     [TestClass]
