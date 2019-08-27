@@ -5,10 +5,21 @@ namespace ShapeUtils
 {
     public class Triangle : Shape, ITriangle, IEquatable<ITriangle>
     {
-        public (double A, double B, double C) Sides { get; set; }
+        private (double A, double B, double C) sides;
 
-        public Triangle(double a, double b, double c) : this((a, b, c)) {}
-        
+        public (double A, double B, double C) Sides 
+        { 
+            get => sides; 
+            set
+            {
+                if (value.A <= 0 || value.B <= 0 || value.C <= 0)
+                    throw new ArgumentException("Wrong sides");
+                sides = value;
+            } 
+        }
+
+        public Triangle(double a, double b, double c) : this((a, b, c)) { }
+
         public Triangle((double a, double b, double c) sides)
         {
             Name = "Triangle";
@@ -18,13 +29,13 @@ namespace ShapeUtils
         public override double GetSquare()
         {
             // для прямоугольного треуголника такой вариант получится точнее
-            if(IsRightAngled())
+            if (IsRightAngled())
             {
                 var list = GetOrderedSides();
                 return list[0] * list[1] / 2.0;
             }
-            
-            var p = (Sides.A + Sides.B + Sides.C) / 2.0;            
+
+            var p = (Sides.A + Sides.B + Sides.C) / 2.0;
             return Math.Sqrt(p * (p - Sides.A) * (p - Sides.B) * (p - Sides.C));
         }
 
@@ -41,26 +52,26 @@ namespace ShapeUtils
 
         private List<double> GetOrderedSides()
         {
-            var list = new List<double>(3) {Sides.A, Sides.B, Sides.C};
+            var list = new List<double>(3) { Sides.A, Sides.B, Sides.C };
             list.Sort();
             return list;
         }
 
         public bool Equals(ITriangle other)
         {
-            if(other == null) return false;
+            if (other == null) return false;
             var currentSides = GetOrderedSides();
-            var otherSides = new List<double>(3) {other.Sides.A, other.Sides.B, other.Sides.C};
+            var otherSides = new List<double>(3) { other.Sides.A, other.Sides.B, other.Sides.C };
             otherSides.Sort();
             for (int i = 0; i < currentSides.Count; i++)
-                if(currentSides[i] != otherSides[i]) return false;
+                if (currentSides[i] != otherSides[i]) return false;
             return true;
         }
 
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(this, obj)) return true;
-            if(obj is ITriangle triangle) return Equals(triangle);
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj is ITriangle triangle) return Equals(triangle);
             return false;
         }
 

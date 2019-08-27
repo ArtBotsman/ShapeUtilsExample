@@ -4,7 +4,17 @@ namespace ShapeUtils
 {
     public class Circle : Shape, ICircle, IEquatable<ICircle>
     {
-        public double Radius { get; set; }
+        private double radius;
+        public double Radius 
+        { 
+            get => radius; 
+            set 
+            {
+                if (value <= 0)
+                    throw new ArgumentException("Radius is incorrect");
+                radius = value;
+            } 
+        }
 
         public Circle(double radius)
         {
@@ -24,8 +34,8 @@ namespace ShapeUtils
 
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(this, obj)) return true;
-            if(obj is ICircle circle) return Equals(circle);
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj is ICircle circle) return Equals(circle);
             return false;
         }
 
@@ -36,7 +46,7 @@ namespace ShapeUtils
 
         public bool Equals(ICircle other)
         {
-            if(other == null) return false;
+            if (other == null) return false;
             return other.Radius == Radius;
         }
     }
